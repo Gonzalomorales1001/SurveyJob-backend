@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;500;800&display=swap');
+
+:root{
+    --LightCyan: hsl(193, 38%, 86%);
+    --NeonGreen: hsl(150, 100%, 66%);
+    --GrayishBlue: hsl(217, 19%, 38%);
+    --DarkGrayishBlue: hsl(217, 19%, 24%);
+    --DarkBlue: hsl(218, 23%, 16%);
+}
+
+body{
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    background-color: var(--DarkBlue);
+    color: var(--LightCyan);
+}
+
+a{
+    text-decoration: none;
+    color: var(--NeonGreen);
+}
+
+.advice-card{
+    background-color: var(--DarkGrayishBlue);
+    max-width: 540px;
+    position: relative;
+    box-shadow: 0px 30px 104px -18px rgba(0,0,0,0.32);
+}
+
+.advice-card img{
+    width: 100%;
+}
+
+.advice-card__title{
+    display: block;
+    color: var(--NeonGreen);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 4px;
+}
+
+.advice-card__content{
+    font-size: 28px;
+}
+
+.advice-card__content::before{content: '“';}
+.advice-card__content::after{content: '”';}
+
+.advice-card__button{
+    background-color: var(--NeonGreen);
+    border-radius: 50%;
+    padding: 15px;
+    border: none;
+    
+    position: absolute;
+    bottom: -56px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.advice-card__button:hover{
+    transition: 0.3s;
+    -webkit-box-shadow: 0px 0px 30px 0px var(--NeonGreen);
+    -moz-box-shadow: 0px 0px 30px 0px var(--NeonGreen);
+    box-shadow: 0px 0px 30px 0px var(--NeonGreen);
+}
+
+.advice-card__button svg:hover{
+    transition: 1s;
+    transform: rotate(360deg);
+}
+
+.attribution { font-size: 11px; text-align: center; font-weight: 200; }
+.attribution a { color: var(--NeonGreen); }
