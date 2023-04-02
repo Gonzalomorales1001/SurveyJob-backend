@@ -6,6 +6,9 @@ class Server{
     constructor(){
         this.app=express()
         this.port=process.env.PORT
+        this.categoryPath='/api/categories'
+        this.usersPath='/api/users'
+        this.surveysPath='/api/surveys'
 
         this.connectDB()
         this.middlewares()
@@ -22,7 +25,9 @@ class Server{
         this.app.use(express.static('public'))
     }
     routes(){
-
+        this.app.use(this.categoryPath, require('../routes/categories'))
+        this.app.use(this.usersPath, require('../routes/users'))
+        this.app.use(this.surveysPath, require('../routes/surveys'))
     }
     listen(){
         this.app.listen(this.port,()=>{
