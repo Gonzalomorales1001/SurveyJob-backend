@@ -6,6 +6,7 @@ class Server{
     constructor(){
         this.app=express()
         this.port=process.env.PORT
+        this.autenPath="/api/auten"
 
         this.connectDB()
         this.middlewares()
@@ -22,6 +23,7 @@ class Server{
         this.app.use(express.static('public'))
     }
     routes(){
+        this.app.use(this.autenPath,require("../routes/auten"))
 
     }
     listen(){
