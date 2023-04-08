@@ -1,4 +1,5 @@
 const {response,request}=require('express')
+const User=require('../models/userModel')
 
 const bcrypt=require('bcryptjs')
 
@@ -8,9 +9,21 @@ const getUsers=(req=request,res=response)=>{
     })
 }
 
-const postUsers=(req=request,res=response)=>{
+const postUsers=async(req=request,res=response)=>{
+    let {name,email,password,rol,status}=req.body
+
+    const salt=bcrypt.genSaltSync(10)
+    const hash=bcrypt.hashSync(password, salt)
+
+    password=hash
+
+    const newUser= new User({name,email,password,rol,status})
+
+    await newUser.save()
+
     res.json({
-        "msg":"post Users habilitado"
+        "msg":"post Users habilitado",
+        newUser,
     })
 }
 
