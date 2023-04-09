@@ -1,4 +1,4 @@
-const {Schema,model}=require('mongoose')
+const {Schema,model,SchemaTypes}=require('mongoose')
 
 const QuestionSchema=Schema({
     content:{
@@ -9,11 +9,11 @@ const QuestionSchema=Schema({
         type:String,
         default: 'TEXT',
         enum:['TEXT','SELECT','CHECKBOX'],
-        required:[true,'Invalid type quesiton']
+        required:[true,'Invalid type question']
     },
     options:{
         type:Array,
-    }
+    },
 })
 
 const SurveySchema=Schema({
@@ -22,7 +22,8 @@ const SurveySchema=Schema({
         required: [true,"Invalid Survey Title"],
     },
     category:{
-        type: String,
+        type: String, //type: SchemaTypes.ObjectId
+        //ref: 'Category'
         required: [true, "Invalid Category"],
         default: 'OTROS'
     },
@@ -35,6 +36,11 @@ const SurveySchema=Schema({
         default: [],
         required: [true,'Invalid Question Schema']
     },
+    // owner:{
+    //     type:SchemaTypes.ObjectId,
+    //     ref:'User',
+    //     required:true
+    // },
     answers:{
         type: Array,
         default: [],
@@ -46,8 +52,9 @@ const SurveySchema=Schema({
     },
     color:{
         type: String,
-        default: "#00FFBB"
-    }
+        default: "cyan"
+    },
+
 })
 
 SurveySchema.methods.toJSON=function(){
@@ -67,5 +74,5 @@ const Question=model('Question',QuestionSchema)
 
 module.exports={
     Survey,
-    Question
+    Question,
 }
