@@ -7,6 +7,7 @@ class Server{
         this.app=express()
         this.port=process.env.PORT
         this.autenPath="/api/auten"
+        this.usuarioPath="/api/usuarios"
 
         this.connectDB()
         this.middlewares()
@@ -24,6 +25,7 @@ class Server{
     }
     routes(){
         this.app.use(this.autenPath,require("../routes/auten"))
+        this.app.use(this.usuarioPath,require("../routes/usuarios"))
 
     }
     listen(){
