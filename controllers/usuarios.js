@@ -1,8 +1,10 @@
+/*
 const { response, request } = require("express");
 // const { validationResult } = require("express-validator");
 //const bcrypt = require("bcryptjs"); //importar librería para encriptar contraseña
 
 const Usuario = require("../models/usuario");
+
 
 const usuariosGet = async (req = request, res = response) => {
   const { desde = 0, limite = 5 } = req.query;
@@ -99,3 +101,4 @@ module.exports = {
   usuariosPut,
   usuariosDelete,
 };
+*/
