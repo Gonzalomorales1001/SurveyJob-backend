@@ -1,7 +1,7 @@
 const {Schema,model}=require('mongoose')
 
 const UserSchema=Schema({
-    name:{
+    username:{
         type: String,
         required: [true,"Invalid Name"],
     },
@@ -17,11 +17,10 @@ const UserSchema=Schema({
     img:{
         type: String,
     },
-    rol:{
-        type: String,
-        required: [true],
-        // enum:["USER","ADMIN"],
-        default:"USER"
+    admin:{
+        type:Boolean,
+        default:false,
+        required:true
     },
     status:{
         type: Boolean,
