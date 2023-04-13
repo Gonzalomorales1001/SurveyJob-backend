@@ -1,8 +1,9 @@
 const {response,request}=require("express")
 const Usuario = require("../models/usuario")
 const bcrypt = require("bcryptjs")
+const { generarJWT } = require("../helpers/generar-jwt")
 
-const login =async (req=request,res=response) =>{
+const login = async (req=request,res=response) =>{
 
     const {correo,pasword}=req.body
 
