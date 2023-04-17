@@ -1,50 +1,50 @@
 const {response,request}=require("express")
-const Usuario = require("../models/usuario")
+const User = require("../models/userModel")
 const bcrypt = require("bcryptjs")
 const { generarJWT } = require("../helpers/generar-jwt")
 
 const login = async (req=request,res=response) =>{
 
-    const {correo,pasword}=req.body
+    const {email,password}=req.body
 
     try {
-        const usuario =await Usuario.findOne({correo})
+        const user =await User.findOne({email}) 
         //Verificar si el correo existe
-        if (!usuario) {
+        if (!user) {
             return res.status(400).json({
                 msg: "El correo ingresado no existe"
             })
         }
 
         //Verificar si el usuario esta activo
-        if(!usuario.estado){
+        if(!user.status){
             return res.status(400).json({
-                msg:"El correo o pasword ingresado no es correcto"
+                msg:"Mail or pasword incorrect"
             })
         }
 
 
         //Verificar la contraseña
-const validarPasword=bcrypt.compareSync(pasword,usuario.pasword)
+const validatePasword=bcrypt.compareSync(password,user.password)
 
-if (!validarPasword) {
+if (!validatePasword) {
     return res.status(400).json({
-        msg:"El correo o pasword ingresado no es correcto /pasword incorrecto"
+        msg:"Email or pasword correct /pasword incorrect"
     })
 }
 
         //Generar el token
-        const token = await generarJWT(usuario.id)
+        const token = await generarJWT(user.id)
  
 
     res.json({
-       msg: "login andando",
+       msg: "login walking",
        token
     })
     } catch (error) {
         console.error(error)
         return res.status(500).json({
-            msg:"Ocurrio un problema. Hable con el administrador"
+            msg:"Ups! An error ocurred. Talk to the administrador"
         })
     }
 

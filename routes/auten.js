@@ -1,13 +1,14 @@
 const {Router} = require("express")
 const {check} = require("express-validator")
+const {validate} = require("../validations/validate")
 const { login } = require("../controllers/auten")
 
 const router = Router()
 
 router.post("/login",[
-    check("correo","correo ingresado no es valido").isEmail(),
-    check("pasword","La contraseña es obligatoria").notEmpty,
-    //importar validarCampos
+    check("email","correo ingresado no es valido").isEmail(),
+    check("password","La contraseña es obligatoria").notEmpty(),
+    validate
 ], login)
 
 
