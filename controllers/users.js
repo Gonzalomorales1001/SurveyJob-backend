@@ -86,6 +86,8 @@ const putUsers=async(req=request,res=response)=>{
 
 const deleteUsers=async(req=request,res=response)=>{
     const {id}=req.params
+
+    const userAuten =req.user
     //eliminar validacion cuando tengamos las validaciones de la base de datos (juan)
     const userFoundByID=await User.findById(id)
 
@@ -99,7 +101,8 @@ const deleteUsers=async(req=request,res=response)=>{
 
     res.json({
         "msg":"Usuario eliminado con éxito!",
-        userDeleted
+        userDeleted,
+        userAuten
     })
 }
 
