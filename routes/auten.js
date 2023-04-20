@@ -6,7 +6,7 @@ const { login } = require("../controllers/auten")
 const router = Router()
 
 router.post("/login",[
-    check("email","correo ingresado no es valido").isEmail(),
+    check("email","El correo ingresado no es valido").isEmail(),
     check("password","La contraseña es obligatoria").notEmpty(),
     validate
 ], login)
