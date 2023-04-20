@@ -14,6 +14,7 @@ router.get('/:id',[],getCategoryById)
 
 router.post('/',[
     validateJWT,
+    check('category','no has enviado un nombre de categoria valido').notEmpty(),
     validate
 ],postCategories)
 
