@@ -23,7 +23,7 @@ const SurveySchema=Schema({
     },
     category:{
         type: String, //type: SchemaTypes.ObjectId
-        //ref: 'Category'
+        //ref:'Category'
         required: [true, "Invalid Category"],
         default: 'OTROS'
     },

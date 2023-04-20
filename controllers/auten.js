@@ -39,12 +39,13 @@ if (!validatePasword) {
 
     res.json({
        msg: "login walking",
+       user,
        token
     })
     } catch (error) {
         console.error(error)
         return res.status(500).json({
-            msg:"Ups! An error ocurred. Talk to the administrador"
+            msg:"Ha ocurrido un error, ponte en contacto con el administrador"
         })
     }
 
