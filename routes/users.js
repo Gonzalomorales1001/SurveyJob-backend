@@ -3,6 +3,8 @@ const {getUsers,getUserByID,postUsers,putUsers,deleteUsers}=require('../controll
 
 const {check}=require('express-validator')
 const {validate}=require('../validations/validate')
+const { validateJWT } = require('../validations/validate-jwt')
+const { adminRole } = require('../validations/roles-validate')
 
 const router=Router()
 
@@ -24,13 +26,16 @@ router.post('/',[
 
 router.put('/:id',[
     //verificar que este logeado,
+    validateJWT,
     check('id','No has enviado una ID válida').isMongoId(),
     validate
 ],putUsers)
 
 router.delete('/:id',[
     //verificar que este logeado
+    validateJWT,
     //verificar que sea un admin o el dueño del usuario
+    adminRole,
     check('id','No has enviado una ID válida').isMongoId(),
     validate
 ],deleteUsers)
