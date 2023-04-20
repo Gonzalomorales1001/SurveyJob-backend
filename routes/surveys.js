@@ -25,7 +25,7 @@ router.post('/',[
     check('questions','No puedes enviar una encuesta sin preguntas.').notEmpty(),
     check('questions','Las preguntas enviadas deben estar como un arreglo de objetos siendo cada objeto una pregunta.').isArray().notEmpty(),
     //validar que 'questions' sea un schema de QuestionSchema (!!!!! Ir al trycatch del controlador donde se envian los datos a la DB)
-    // body('questions','No has enviado una pregunta válida').custom(isValidQuestion),
+    // isValidQuestion,
     //validar si envió una categoría existente
     check('anonymous','No has definido si la encuesta es anónima o no (true/false)').isBoolean(),
     validate
