@@ -33,6 +33,8 @@ const getUserByID=async(req=request,res=response)=>{
         })
     }
 
+    // let userSurveys=await Survey.find({'owner.ownerID':id})
+
     let userSurveys=await Survey.find({owner:id})
     if(userSurveys.length===0){userSurveys='Este usuario no tiene encuestas creadas'}
 
@@ -73,6 +75,11 @@ const putUsers=async(req=request,res=response)=>{
     }
 
     let {username,email,password,admin,img}=req.body
+
+    const salt=bcrypt.genSaltSync(10)
+    const hash=bcrypt.hashSync(password, salt)
+
+    password=hash
 
     const data={username,email,password,admin,img}
 

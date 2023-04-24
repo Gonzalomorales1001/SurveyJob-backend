@@ -34,9 +34,16 @@ const getSurveyByID=async(req=request,res=response)=>{
 }
 
 const postSurveys=async(req=request,res=response)=>{
-    let {title,questions,category,anonymous,color}=req.body
+    let {title,questions,category,public,anonymous,color}=req.body
 
-    let owner=req.user.id
+    let owner=req.user._id
+    if(!owner){return res.status(500).json({"msg":"Usuario no identificado"})}
+
+    // let owner={
+    //     username: req.user.username,
+    //     ownerID: req.user._id
+    // }
+    // if(!req.user){return res.status(500).json({"msg":"Usuario no identificado"})}
 
     //creando instancias por cada pregunta recibida en request
     const surveyQuestions=[]
@@ -45,7 +52,7 @@ const postSurveys=async(req=request,res=response)=>{
     questions=surveyQuestions
     category=category?.toUpperCase()
     //creando nueva encuesta
-    const newSurvey= new Survey({title,questions,category,anonymous,color})
+    const newSurvey= new Survey({title,questions,category,owner,anonymous,public,color})
 
     //a revisar (!!)
     try {
@@ -59,7 +66,7 @@ const postSurveys=async(req=request,res=response)=>{
     // await newSurvey.save()
 
     res.json({
-        "msg":"La encuesta ha sido creada con éxito",
+        "msg":`La encuesta de ${req.user.username} ha sido creada con éxito!`,
         newSurvey,
     })
 }
