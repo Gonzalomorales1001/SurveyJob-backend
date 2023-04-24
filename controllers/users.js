@@ -33,6 +33,8 @@ const getUserByID=async(req=request,res=response)=>{
         })
     }
 
+    // let userSurveys=await Survey.find({'owner.ownerID':id})
+
     let userSurveys=await Survey.find({owner:id})
     if(userSurveys.length===0){userSurveys='Este usuario no tiene encuestas creadas'}
 
@@ -74,6 +76,11 @@ const putUsers=async(req=request,res=response)=>{
 
     let {username,email,password,admin,img}=req.body
 
+    const salt=bcrypt.genSaltSync(10)
+    const hash=bcrypt.hashSync(password, salt)
+
+    password=hash
+
     const data={username,email,password,admin,img}
 
     const updatedUser= await User.findByIdAndUpdate(id,data,{new:true})
@@ -88,16 +95,22 @@ const deleteUsers=async(req=request,res=response)=>{
     const {id}=req.params
 
     const userAuten =req.user
-    //eliminar validacion cuando tengamos las validaciones de la base de datos (juan)
+
+    if(!userAuten.admin){
+        return res.status(401).json({
+            "msg":"No tienes permisos de administrador para hacer esto"
+        })
+    }
+
     const userFoundByID=await User.findById(id)
 
-    if(!userFoundByID||!userFoundByID.status){
+    if(!userFoundByID){
         return res.status(404).json({
             "msg":"El usuario no ha sido encontrado o no se encuentra disponible"
         })
     }
 
-    const userDeleted= await User.findByIdAndUpdate(id,{status:false},{new:true})
+    const userDeleted= await User.findByIdAndDelete(id)
 
     res.json({
         "msg":"Usuario eliminado con éxito!",

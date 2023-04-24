@@ -36,11 +36,11 @@ const SurveySchema=Schema({
         default: [],
         required: [true,'Invalid Question Schema']
     },
-    // owner:{
-    //     type:SchemaTypes.ObjectId,
-    //     ref:'User',
-    //     required:true
-    // },
+    owner:{
+        type:SchemaTypes.ObjectId,
+        ref:'User',
+        required:true
+    },
     answers:{
         type: Array,
         default: [],
@@ -49,6 +49,11 @@ const SurveySchema=Schema({
         type: Boolean,
         default: true,
         required: true,
+    },
+    public:{
+        type:Boolean,
+        default:false,
+        required:true
     },
     color:{
         type: String,

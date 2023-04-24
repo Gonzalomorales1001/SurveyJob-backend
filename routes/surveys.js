@@ -5,6 +5,7 @@ const {check, checkSchema, body}=require('express-validator')
 const {validate}=require('../validations/validate')
 
 const {isValidQuestion}=require('../validations/customValidations')
+const { validateJWT } = require('../validations/validate-jwt')
 
 //survey controller functions
 const {getSurveys,getSurveyByID,postSurveys,putSurveys,addAnswer,deleteSurveys}=require('../controllers/surveys')
@@ -19,21 +20,20 @@ router.get('/:id',[
 ],getSurveyByID)
 
 router.post('/',[
-    //validar que este logeado
+    validateJWT,
+    //validar si envió una categoría existente
     check('title','Porfavor, envia el título de la encuesta.').notEmpty(),
     check('title','El título de la encuesta debe tener almenos 5 carácteres').isLength({min:5}),
     check('questions','No puedes enviar una encuesta sin preguntas.').notEmpty(),
     check('questions','Las preguntas enviadas deben estar como un arreglo de objetos siendo cada objeto una pregunta.').isArray().notEmpty(),
     //validar que 'questions' sea un schema de QuestionSchema (!!!!! Ir al trycatch del controlador donde se envian los datos a la DB)
-    // isValidQuestion,
-    //validar si envió una categoría existente
+    check('public','No has definido si la encuesta sera visible').notEmpty(),
     check('anonymous','No has definido si la encuesta es anónima o no (true/false)').isBoolean(),
     validate
 ],postSurveys)
 
 router.put('/:id',[
-    //verficar que esté logeado
-    //validar que sea un usuario apto (el dueño de la encuesta/el admin suprem
+    validateJWT,
     check('id','El ID solicitado no es un ID válido').isMongoId(),
     validate
 ],putSurveys)
@@ -44,8 +44,7 @@ router.put('/answer/:id',[
 ],addAnswer)
 
 router.delete('/:id',[
-    //verificar que este logeado
-    //validar que sea un usuario apto (el dueño de la encuesta/el admin supremo)
+    validateJWT,
     check('id','El ID solicitado no es un ID válido').isMongoId(),
     validate
 ],deleteSurveys)
