@@ -6,7 +6,6 @@ const {validate}=require('../validations/validate')
 
 const {isValidQuestion}=require('../validations/customValidations')
 const { validateJWT } = require('../validations/validate-jwt')
-const { adminRole } = require('../validations/roles-validate')
 
 //survey controller functions
 const {getSurveys,getSurveyByID,postSurveys,putSurveys,addAnswer,deleteSurveys}=require('../controllers/surveys')

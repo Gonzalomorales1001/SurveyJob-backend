@@ -2,6 +2,7 @@ const {response,request}=require("express")
 const User = require("../models/userModel")
 const bcrypt = require("bcryptjs")
 const nodemailer=require('nodemailer')
+const jwt=require('jsonwebtoken')
 const { generarJWT } = require("../helpers/generar-jwt")
 
 
@@ -102,10 +103,16 @@ const forgottenPassword=async(req=request,res=response)=>{
 const newPassword=async(req=request,res=response)=>{
     try {
         const token=req.params.token
-        
         if(!token){
             return res.status(400).json({
-                "msg":"token no válido"
+                "msg":"El token no es válido"
+            })
+        }
+        
+        const validToken=jwt.verify(token,process.env.JWT_SECRET)
+        if(!validToken){
+            return res.status(400).json({
+                "msg":"El token ha expirado"
             })
         }
     
