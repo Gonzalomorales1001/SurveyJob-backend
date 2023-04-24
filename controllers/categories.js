@@ -10,8 +10,9 @@ const getCategories=async(req=request,res=response)=>{
     const [Categories,total]=await Promise.all([Category.find(statusTrue).skip(since).limit(limit),Category.countDocuments(statusTrue)])
     
     res.json({
-        "msg":"get categories habilitado",Category, 
-        "total":total
+        "msg":"get categories habilitado",
+        Categories, 
+        total
     })
 }
 
@@ -25,7 +26,8 @@ const getCategoryById=async(req=request,res=response)=>{
     })}
 
     res.json({
-        "msg":"get categories by id habilitado"
+        "msg":"Categoria encontrada",
+        categoryFoundById
     })
 }
 

@@ -10,7 +10,11 @@ const router=Router()
 
 router.get('/',getCategories)
 
-router.get('/:id',[],getCategoryById)
+router.get('/:id',[
+    validateJWT, 
+    check ('category, El ID no es valido'). isMongoId(),
+    validate
+],getCategoryById)
 
 router.post('/',[
     validateJWT,
@@ -18,8 +22,11 @@ router.post('/',[
     validate
 ],postCategories)
 
-router.put('/',putCategories)
+router.put('/:id',[
+    check ('id').isMongoId()] ,
+    putCategories)
 
-router.delete('/',deleteCategories)
+router.delete('/:id', [
+    check ('id','EL ID solicitado no es valido'). isMongoId(), validate], deleteCategories)
 
 module.exports=router
