@@ -3,7 +3,7 @@ const {Schema,model,SchemaTypes}=require('mongoose')
 const AnswerSchema=Schema({
     survey:{
         type:SchemaTypes.ObjectId,
-        ref:'Surveys',
+        ref:'Survey',
         required:[true,'No survey']
     },
     content:{
@@ -12,4 +12,4 @@ const AnswerSchema=Schema({
     }
 })
 
-module.exports=model(AnswerSchema)
+module.exports=model('Answer',AnswerSchema)

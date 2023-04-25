@@ -10,7 +10,7 @@ const { validateJWT } = require('../validations/validate-jwt')
 const {isValidCategory,surveyFound}=require('../validations/customValidations')
 
 //survey controller functions
-const {getSurveys,getSurveyByID,postSurveys,putSurveys,deleteSurveys}=require('../controllers/surveys')
+const {getSurveys,getSurveyByID,postSurveys,putSurveys,addNewAnswer,deleteSurveys}=require('../controllers/surveys')
 
 const router=Router()
 
@@ -24,7 +24,6 @@ router.get('/:id',[
 
 router.post('/',[
     validateJWT,
-
     check('title','Porfavor, envia el título de la encuesta.').notEmpty(),
     check('title','El título de la encuesta debe tener almenos 5 carácteres').isLength({min:5}),
     check('category','La categoría no puede estar vacía').notEmpty(),
@@ -44,6 +43,13 @@ router.put('/:id',[
     check('id').custom(surveyFound),
     validate
 ],putSurveys)
+
+router.put('/answer/:id',[
+    check('id','El ID solicitado no es un ID válido').isMongoId(),
+    check('id').custom(surveyFound),
+    check('answers','Las respuestas no deben de estar vacías').notEmpty(),
+    validate
+],addNewAnswer)
 
 router.delete('/:id',[
     validateJWT,

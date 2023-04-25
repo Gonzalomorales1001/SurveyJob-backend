@@ -1,6 +1,7 @@
 const {response,request}=require('express')
 const {Survey,Question}=require('../models/surveyModel')
 const Category=require('../models/categoryModel')
+const Answer=require('../models/answersModel')
 
 const getSurveys=async(req=request,res=response)=>{
     const {since=0,limit=5}=req.query
@@ -96,6 +97,25 @@ const putSurveys=async(req=request,res=response)=>{
     })
 }
 
+const addNewAnswer=async(req=request,res=response)=>{
+    const {id}=req.params
+    const answersSent=req.body.answers
+
+    const surveyFoundByID=await Survey.findById(id)
+
+    const newAnswer=await new Answer({survey:surveyFoundByID.surveyID,content:answersSent})
+
+    surveyFoundByID.answers.push(newAnswer)
+
+    await Survey.findByIdAndUpdate(id,{answers:surveyFoundByID.answers},{new:true})
+
+    res.json({
+        "msg":"La respuesta ha sido agregada con éxito!",
+        newAnswer
+    })
+
+}
+
 const deleteSurveys=async(req=request,res=response)=>{
     const {id}=req.params
 
@@ -114,5 +134,6 @@ module.exports={
     getSurveyByID,
     postSurveys,
     putSurveys,
+    addNewAnswer,
     deleteSurveys,
 }
