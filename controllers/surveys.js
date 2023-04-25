@@ -1,6 +1,7 @@
 const {response,request}=require('express')
-const {Survey,Question}=require('../models/surveyModel')
+const {Survey,Question,Answer}=require('../models/surveyModel')
 const Category=require('../models/categoryModel')
+const Answer=require('../models/answersModel')
 
 const getSurveys=async(req=request,res=response)=>{
     const {since=0,limit=5}=req.query
@@ -21,12 +22,6 @@ const getSurveyByID=async(req=request,res=response)=>{
     const {id}=req.params
     //eliminar validacion cuando tengamos las validaciones de la base de datos (juan)
     const surveyFoundByID=await Survey.findById(id)
-
-    if(!surveyFoundByID||!surveyFoundByID.status){
-        return res.status(404).json({
-            "msg":"Esta encuesta no existe o no se encuentra disponible."
-        })
-    }
 
     res.json({
         "msg":"Encuesta encontrada",
@@ -83,15 +78,7 @@ const postSurveys=async(req=request,res=response)=>{
 const putSurveys=async(req=request,res=response)=>{
     const {id}=req.params
     let {title,category,questions,color}=req.body
-
-        //eliminar validacion cuando tengamos las validaciones de la base de datos (juan)
         const surveyFoundByID=await Survey.findById(id)
-
-        if(!surveyFoundByID||!surveyFoundByID.status){
-            return res.status(404).json({
-                "msg":"Esta encuesta no existe o no se encuentra disponible."
-            })
-        }
 
     category=category.toUpperCase()
 
@@ -110,20 +97,29 @@ const putSurveys=async(req=request,res=response)=>{
     })
 }
 
-const addAnswer=async(req=request,res=response)=>{
+const addNewAnswer=async(req=request,res=response)=>{
     const {id}=req.params
+    const answersSent=req.body.answers
+
+    const surveyFoundByID=await Survey.findById(id)
+
+    const newAnswer=await new Answer({survey:surveyFoundByID.surveyID,content:answersSent})
+
+    surveyFoundByID.answers.push(newAnswer)
+
+    await Survey.findByIdAndUpdate(id,{answers:surveyFoundByID.answers},{new:true})
+
+    res.json({
+        "msg":"La respuesta ha sido agregada con éxito!",
+        newAnswer
+    })
+
 }
 
 const deleteSurveys=async(req=request,res=response)=>{
     const {id}=req.params
-    //eliminar validacion cuando tengamos las validaciones de la base de datos (juan)
-    const surveyFoundByID=await Survey.findById(id)
 
-    if(!surveyFoundByID||!surveyFoundByID.status){
-        return res.status(404).json({
-            "msg":"Esta encuesta no existe o no se encuentra disponible."
-        })
-    }
+    const surveyFoundByID=await Survey.findById(id)
 
     await Survey.findByIdAndUpdate(id,{status:false},{new:true})
 
@@ -138,6 +134,6 @@ module.exports={
     getSurveyByID,
     postSurveys,
     putSurveys,
-    addAnswer,
+    addNewAnswer,
     deleteSurveys,
 }
