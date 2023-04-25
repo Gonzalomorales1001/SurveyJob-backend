@@ -7,7 +7,7 @@ const {validate}=require('../validations/validate')
 const {isValidQuestion}=require('../validations/customValidations')
 const { validateJWT } = require('../validations/validate-jwt')
 
-const {isValidCategory}=require('../validations/customValidations')
+const {isValidCategory,surveyFound}=require('../validations/customValidations')
 
 //survey controller functions
 const {getSurveys,getSurveyByID,postSurveys,putSurveys,addAnswer,deleteSurveys}=require('../controllers/surveys')
@@ -18,6 +18,7 @@ router.get('/',getSurveys)
 
 router.get('/:id',[
     check('id','El ID solicitado no es un ID válido').isMongoId(),
+    check('id').custom(surveyFound),
     validate
 ],getSurveyByID)
 
@@ -39,17 +40,22 @@ router.post('/',[
 router.put('/:id',[
     validateJWT,
     check('id','El ID solicitado no es un ID válido').isMongoId(),
+    check('id').custom(surveyFound),
     validate
 ],putSurveys)
 
 router.put('/answer/:id',[
     check('id','El ID solicitado no es un ID válido').isMongoId(),
+    check('id').custom(surveyFound),
+    check('answers','No puedes enviar preguntas vacías').notEmpty(),
+    check('answers','Las respuestas deben estar dentro de un arreglo').isArray().notEmpty(),
     validate
 ],addAnswer)
 
 router.delete('/:id',[
     validateJWT,
     check('id','El ID solicitado no es un ID válido').isMongoId(),
+    check('id').custom(surveyFound),
     validate
 ],deleteSurveys)
 

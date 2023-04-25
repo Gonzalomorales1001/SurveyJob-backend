@@ -16,6 +16,18 @@ const QuestionSchema=Schema({
     },
 })
 
+const AnswerSchema=Schema({
+    content:{
+        type:Array,
+        required:[true,'No answer']
+    },
+    question:{
+        type:SchemaTypes.ObjectId,
+        ref:'Question',
+        required:[true,'No question ID for this answer']
+    }
+})
+
 const SurveySchema=Schema({
     title:{
         type: String,
@@ -41,8 +53,9 @@ const SurveySchema=Schema({
         required:true
     },
     answers:{
-        type: Array,
+        type: [AnswerSchema],
         default: [],
+        required: [true,'Invalid Answer Schema']
     },
     anonymous:{
         type: Boolean,
@@ -51,7 +64,7 @@ const SurveySchema=Schema({
     },
     public:{
         type:Boolean,
-        default:false,
+        default:true,
         required:true
     },
     color:{
@@ -75,8 +88,10 @@ QuestionSchema.methods.toJSON=function(){
 
 const Survey=model('Survey',SurveySchema)
 const Question=model('Question',QuestionSchema)
+const Answer=model('Answer',AnswerSchema)
 
 module.exports={
     Survey,
     Question,
+    Answer
 }
