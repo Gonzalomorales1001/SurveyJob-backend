@@ -22,8 +22,7 @@ const SurveySchema=Schema({
         required: [true,"Invalid Survey Title"],
     },
     category:{
-        type: String, //type: SchemaTypes.ObjectId
-        //ref:'Category'
+        type: String,
         required: [true, "Invalid Category"],
         default: 'OTROS'
     },
