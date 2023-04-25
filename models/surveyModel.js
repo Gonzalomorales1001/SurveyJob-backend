@@ -47,15 +47,14 @@ const SurveySchema=Schema({
         default: [],
         required: [true,'Invalid Question Schema']
     },
+    answers:{
+        type:Array,
+        default:[],
+    },
     owner:{
         type:SchemaTypes.ObjectId,
         ref:'User',
         required:true
-    },
-    answers:{
-        type: [AnswerSchema],
-        default: [],
-        required: [true,'Invalid Answer Schema']
     },
     anonymous:{
         type: Boolean,
