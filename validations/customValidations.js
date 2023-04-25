@@ -1,12 +1,17 @@
-
 const {request,response}=require('express')
 
-const isValidQuestion=(req=request,res=response)=>{
-    // const {validate}=require('mongoose-schema-validator')
-    // const {QuestionSchema}=require('../models/surveyModel')
+const User=require('../models/userModel')
+const Category=require('../models/categoryModel')
+
+const isValidCategory=async(categoryReq)=>{
+    const categoryFound=await Category.find({category:categoryReq})
+
+    if(!categoryFound){
+        throw new Error(`La categoría "${categoryReq}" no existe. Prueba poniendo una categoría real`)
+    }
 
 }
 
 module.exports={
-    isValidQuestion,
+    isValidCategory,
 }

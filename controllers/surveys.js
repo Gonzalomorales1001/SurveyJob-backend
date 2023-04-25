@@ -1,5 +1,6 @@
 const {response,request}=require('express')
 const {Survey,Question}=require('../models/surveyModel')
+const Category=require('../models/categoryModel')
 
 const getSurveys=async(req=request,res=response)=>{
     const {since=0,limit=5}=req.query
@@ -45,12 +46,20 @@ const postSurveys=async(req=request,res=response)=>{
     // }
     // if(!req.user){return res.status(500).json({"msg":"Usuario no identificado"})}
 
+    const validCategory=await Category.findOne({category:category})
+    if(!validCategory){
+        return res.status(400).json({
+            "msg":"No asignaste una categoría existente"
+        })
+    }
+
     //creando instancias por cada pregunta recibida en request
     const surveyQuestions=[]
     questions.forEach((question)=>surveyQuestions.push(new Question(question)))
     //reasignando nuevos valores a variables
     questions=surveyQuestions
     category=category?.toUpperCase()
+
     //creando nueva encuesta
     const newSurvey= new Survey({title,questions,category,owner,anonymous,public,color})
 

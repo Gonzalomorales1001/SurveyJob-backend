@@ -51,7 +51,10 @@ const putCategories=async(req=request,res=response)=>{
 
     const categoryFoundById=await Category.findById(id) 
     if(!categoryFoundById||!categoryFoundById.status){
-        return res.status(404).json({"msg":"La categoria no se encuentra"})}
+        return res.status(404).json({
+            "msg":"La categoria no se encuentra"
+        })
+    }
 
         let {category}=req.body
         
