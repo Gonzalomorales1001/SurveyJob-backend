@@ -40,10 +40,6 @@ const SurveySchema=Schema({
         ref:'User',
         required:true
     },
-    answers:{
-        type: Array,
-        default: [],
-    },
     anonymous:{
         type: Boolean,
         default: true,
@@ -51,7 +47,7 @@ const SurveySchema=Schema({
     },
     public:{
         type:Boolean,
-        default:false,
+        default:true,
         required:true
     },
     color:{
