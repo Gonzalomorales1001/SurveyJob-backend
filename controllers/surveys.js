@@ -1,6 +1,7 @@
 const {response,request}=require('express')
 const {Survey,Question,Answer}=require('../models/surveyModel')
 const Category=require('../models/categoryModel')
+const Answer=require('../models/answersModel')
 
 const getSurveys=async(req=request,res=response)=>{
     const {since=0,limit=5}=req.query
@@ -96,23 +97,22 @@ const putSurveys=async(req=request,res=response)=>{
     })
 }
 
-const addAnswer=async(req=request,res=response)=>{
+const addNewAnswer=async(req=request,res=response)=>{
     const {id}=req.params
-    //el answer de la req.body debe ser si o si un esquema de respuesta válido
-    let {answers}=req.body
-    //creando instancias de respuestas para cada respuesta enviada
-    const newAnswer=[]
-    answers.forEach((answer)=>newAnswer.push(new Answer(answer)))
+    const answersSent=req.body.answers
 
-    answers=[newAnswer]
+    const surveyFoundByID=await Survey.findById(id)
 
-    await Survey.findByIdAndUpdate(id,{answers:[newAnswer]},{new:true})
+    const newAnswer=await new Answer({survey:surveyFoundByID.surveyID,content:answersSent})
+
+    surveyFoundByID.answers.push(newAnswer)
+
+    await Survey.findByIdAndUpdate(id,{answers:surveyFoundByID.answers},{new:true})
 
     res.json({
-        "msg":"Tus respuestas han sido enviadas correctamente!",
-        answers
+        "msg":"La respuesta ha sido agregada con éxito!",
+        newAnswer
     })
-
 
 }
 
@@ -134,6 +134,6 @@ module.exports={
     getSurveyByID,
     postSurveys,
     putSurveys,
-    addAnswer,
+    addNewAnswer,
     deleteSurveys,
 }
