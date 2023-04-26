@@ -1,5 +1,5 @@
 const {response,request}=require('express')
-const {Survey,Question,Answer}=require('../models/surveyModel')
+const {Survey,Question}=require('../models/surveyModel')
 const Category=require('../models/categoryModel')
 const Answer=require('../models/answersModel')
 
