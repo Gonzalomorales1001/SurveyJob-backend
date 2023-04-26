@@ -17,14 +17,14 @@ const QuestionSchema=Schema({
 })
 
 const AnswerSchema=Schema({
+    survey:{
+        type:SchemaTypes.ObjectId,
+        ref:'Survey',
+        required:[true,'No survey']
+    },
     content:{
         type:Array,
-        required:[true,'No answer']
-    },
-    question:{
-        type:SchemaTypes.ObjectId,
-        ref:'Question',
-        required:[true,'No question ID for this answer']
+        required:[true, 'No content answer']
     }
 })
 

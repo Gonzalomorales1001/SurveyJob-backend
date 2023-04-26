@@ -1,7 +1,6 @@
 const {response,request}=require('express')
-const {Survey,Question}=require('../models/surveyModel')
+const {Survey,Question,Answer}=require('../models/surveyModel')
 const Category=require('../models/categoryModel')
-const Answer=require('../models/answersModel')
 
 const getSurveys=async(req=request,res=response)=>{
     const {since=0,limit=5}=req.query
