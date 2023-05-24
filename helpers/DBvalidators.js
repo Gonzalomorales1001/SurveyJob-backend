@@ -3,10 +3,10 @@ const User=require('../models/userModel')
 
 const userEmailAlreadyInUse=async(emailReq)=>{
     const emailInUse=await User.findOne({email:emailReq})
-    if(!emailInUse.status){
-        throw new Error('Ese email esta inhabilitado, por favor, ponte en contacto con el administrador!')
-    }
     if (emailInUse){
+        if(!emailInUse.status){
+            throw new Error('Ese email esta inhabilitado, por favor, ponte en contacto con el administrador!')
+        }
         throw new Error(`Ese email ya esta en uso`)
     }
 }
