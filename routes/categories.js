@@ -11,7 +11,7 @@ const router=Router()
 router.get('/',getCategories)
 
 router.get('/:id',[
-    check ('category, El ID no es valido'). isMongoId(),
+    check ('id', 'El ID no es valido'). isMongoId(),
     validate
 ],getCategoryById)
 
@@ -36,8 +36,6 @@ router.delete('/:id', [
     check ('id','EL ID solicitado no es valido'). isMongoId(),
     validateJWT,
     adminRole,
-    check('category','La categoría no puede estar vacía').notEmpty(),
-    check('category','La categoría debe ser enviada en mayúsculas').isUppercase(),
     validate
 ],deleteCategories)
 
