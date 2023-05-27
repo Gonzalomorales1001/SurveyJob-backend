@@ -75,10 +75,20 @@ const forgottenPassword=async(req=request,res=response)=>{
             to: email,
             from: process.env.EMAIL,
             subject: 'Solicitud de restablecimiento de contraseña - SurveyJob',
-            text: `Has recibido este correo electrónico porque se ha solicitado el restablecimiento de la contraseña de tu cuenta de SurveyJob.\n\n
-                Haz clic en el siguiente enlace o pégalo en tu navegador para completar el proceso:\n\n
-                ${req.headers.host}/api/auten/reset-password/${token}\n\n
-                Si no has solicitado esto, ignora este correo.\n`,
+            html: `
+            <div style="text-align: center;">
+              <img src="https://i.postimg.cc/fbPJhw6c/Dark-Letter-Logo.png" alt="Logo de SurveyJob" width="150px">
+              <h2 style="color: #333;">Solicitud de restablecimiento de contraseña</h2>
+              <p style="color: #333;">
+                Has recibido este correo electrónico porque se ha solicitado el restablecimiento de la contraseña de tu cuenta de SurveyJob.
+              </p>
+              <p style="color: #333;">
+                Haz clic en el siguiente botón para completar el proceso:
+              </p>
+              <a href="https://surveyjob.netlify.app/reset-password/${token}" style="display: inline-block; background-color: #F0A500; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 15px;">Restablecer contraseña</a>
+              <p style="color: #FF5555;">Si no has solicitado esto, ignora este correo.</p>
+            </div>
+          `,
           };
 
         const transporter=nodemailer.createTransport(transport)
