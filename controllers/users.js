@@ -24,7 +24,6 @@ const getUsers=async(req=request,res=response)=>{
 const getUserByID=async(req=request,res=response)=>{
     const {id}=req.params
 
-    //eliminar validacion cuando tengamos las validaciones de la base de datos (juan)
     const userFoundByID=await User.findById(id)
 
     if(!userFoundByID||!userFoundByID.status){

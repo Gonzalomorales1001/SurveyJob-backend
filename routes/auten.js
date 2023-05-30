@@ -16,7 +16,8 @@ router.post('/forgotten-password',[
     validate
 ],forgottenPassword)
 
-router.put('/reset-password/:token',[
+router.put('/reset-password/:id',[
+    check('id','No has enviado una ID válida').isMongoId(),
     check('password','La contraseña nueva no puede estar vacía').notEmpty(),
     check('password','La contraseña debe tener almenos 8 carácteres, letras mayúsculas, minúsculas, numeros y símbolos').isStrongPassword(),
     validate

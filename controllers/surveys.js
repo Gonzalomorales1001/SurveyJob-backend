@@ -34,12 +34,6 @@ const postSurveys=async(req=request,res=response)=>{
     let owner=req.user._id
     if(!owner){return res.status(500).json({"msg":"Usuario no identificado"})}
 
-    // let owner={
-    //     username: req.user.username,
-    //     ownerID: req.user._id
-    // }
-    // if(!req.user){return res.status(500).json({"msg":"Usuario no identificado"})}
-
     const validCategory=await Category.findOne({category:category})
     if(!validCategory){
         return res.status(400).json({
