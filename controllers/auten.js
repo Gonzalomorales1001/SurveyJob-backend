@@ -58,7 +58,7 @@ const forgottenPassword=async(req=request,res=response)=>{
         }
         //Si todo esta correcto, generar el token
         const token = await generarJWT(user.id)
-
+        const verificationLink=`http://localhost:5173/reset-password/${user.id}`
         user.resetPasswordToken=token
         
         const transport={
@@ -71,7 +71,6 @@ const forgottenPassword=async(req=request,res=response)=>{
             }
         }
 
-        const encodedToken=encodeURIComponent(token)
         const mailOptions = {
             to: email,
             from: process.env.EMAIL,
@@ -86,7 +85,7 @@ const forgottenPassword=async(req=request,res=response)=>{
               <p style="color: #333;">
                 Haz clic en el siguiente botón para completar el proceso:
               </p>
-              <a href="https://surveyjob.netlify.app/reset-password/${encodedToken}" style="display: inline-block; background-color: #F0A500; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 15px;">Restablecer contraseña</a>
+              <a href="${verificationLink}" style="display: inline-block; background-color: #F0A500; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 15px;">Restablecer contraseña</a>
               <p style="color: #FF5555;">Si no has solicitado esto, ignora este correo.</p>
             </div>
           `,
@@ -113,12 +112,15 @@ const forgottenPassword=async(req=request,res=response)=>{
 
 const newPassword=async(req=request,res=response)=>{
     try {
-        const token=req.params.token
-        if(!token){
+        const userID=req.params.id
+        if(!userID){
             return res.status(400).json({
-                "msg":"El token no es válido"
+                "msg":"Usuario no válido"
             })
         }
+
+        const userFoundByID=await User.findById(userID)
+        const token=userFoundByID.resetPasswordToken
         
         const validToken=jwt.verify(token,process.env.JWT_SECRET)
         if(!validToken){
@@ -126,9 +128,6 @@ const newPassword=async(req=request,res=response)=>{
                 "msg":"El token ha expirado"
             })
         }
-    
-        const userFoundByPasswordResetToken=await User.findOne({resetPasswordToken:token})
-        const id=userFoundByPasswordResetToken._id
         
         let password=req.body.password
         
@@ -140,7 +139,7 @@ const newPassword=async(req=request,res=response)=>{
 
         data={password,resetPasswordToken}
     
-        const updatedUser= await User.findByIdAndUpdate(id,data,{new:true})
+        const updatedUser= await User.findByIdAndUpdate(userID,data,{new:true})
     
         return res.json({
             "msg":`La contraseña de ${updatedUser.username} ha sido actualizada con éxito!`
