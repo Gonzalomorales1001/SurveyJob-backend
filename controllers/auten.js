@@ -58,7 +58,7 @@ const forgottenPassword=async(req=request,res=response)=>{
         }
         //Si todo esta correcto, generar el token
         const token = await generarJWT(user.id)
-        const verificationLink=`http://localhost:5173/reset-password/${user.id}`
+        const verificationLink=`https://surveyjob.netlify.app/reset-password/${user.id}`
         user.resetPasswordToken=token
         
         const transport={
@@ -85,7 +85,7 @@ const forgottenPassword=async(req=request,res=response)=>{
               <p style="color: #333;">
                 Haz clic en el siguiente botón para completar el proceso:
               </p>
-              <a href="${verificationLink}" style="display: inline-block; background-color: #F0A500; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 15px;">Restablecer contraseña</a>
+              <a href="${verificationLink}" target="_blank" style="display: inline-block; background-color: #F0A500; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 15px;">Restablecer contraseña</a>
               <p style="color: #FF5555;">Si no has solicitado esto, ignora este correo.</p>
             </div>
           `,
