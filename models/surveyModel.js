@@ -8,7 +8,7 @@ const QuestionSchema=Schema({
     questionType:{
         type:String,
         default: 'TEXT',
-        enum:['TEXT','SELECT','CHECKBOX'],
+        enum:['TEXT','RADIO','CHECKBOX'],
         required:[true,'Invalid type question']
     },
     options:{
