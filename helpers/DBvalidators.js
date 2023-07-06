@@ -4,6 +4,9 @@ const User=require('../models/userModel')
 const userEmailAlreadyInUse=async(emailReq)=>{
     const emailInUse=await User.findOne({email:emailReq})
     if (emailInUse){
+        if(!emailInUse.status){
+            throw new Error('Ese email esta inhabilitado, por favor, ponte en contacto con el administrador!')
+        }
         throw new Error(`Ese email ya esta en uso`)
     }
 }
@@ -21,13 +24,6 @@ const idUserNotFound=async(idReq)=>{
         throw new Error(`The user doesn't exist`)
     }
 }
-
-// const idCategoryNotFound=async(idReq)=>{
-//     const categoryFoundByID=await Category.findById(idReq)
-//     if(!categoryFoundByID){
-//         throw new Error(`The category doesn't exist`)
-//     }
-// }
 
 module.exports={
     userEmailAlreadyInUse,
