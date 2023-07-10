@@ -3,13 +3,22 @@ const {Survey,Question,Answer}=require('../models/surveyModel')
 const Category=require('../models/categoryModel')
 
 const getSurveys=async(req=request,res=response)=>{
-    const {since=0,limit=5}=req.query
+    const {since=0,limit=5, userId}=req.query
     const statusTrue={status:true}
 
-    const [surveys,total]=await Promise.all([
+    if (userId) {
+        var [surveys,total]=await Promise.all([
+        Survey.find(statusTrue).where("owner").equals(userId).skip(since).limit(limit) //.populate('user','name email'),
+        ,Survey.countDocuments(statusTrue).where("owner").equals(userId)
+        ])
+    
+    } else {
+        var [surveys,total]=await Promise.all([
         Survey.find(statusTrue).skip(since).limit(limit) //.populate('user','name email'),
         ,Survey.countDocuments(statusTrue)
-    ])
+        ])
+    
+    }
 
     res.json({
         surveys,
