@@ -38,7 +38,7 @@ const getSurveyByID=async(req=request,res=response)=>{
 }
 
 const postSurveys=async(req=request,res=response)=>{
-    let {title,questions,category,public,anonymous,color}=req.body
+    let {title,questions,category,description,public,anonymous,color}=req.body
 
     let owner=req.user._id
     if(!owner){return res.status(500).json({"msg":"Usuario no identificado"})}
@@ -58,7 +58,7 @@ const postSurveys=async(req=request,res=response)=>{
     category=category?.toUpperCase()
 
     //creando nueva encuesta
-    const newSurvey= new Survey({title,questions,category,owner,anonymous,public,color})
+    const newSurvey= new Survey({title,questions,category,description,owner,anonymous,public,color})
 
     //a revisar (!!)
     try {
