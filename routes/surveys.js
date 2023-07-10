@@ -29,11 +29,12 @@ router.post('/',[
     check('category','La categoría no puede estar vacía').notEmpty(),
     check('category','La categoría debe ser enviada en mayúsculas').isUppercase(),
     check('category').custom(isValidCategory),
+    check('description','La encuesta debe tener una descripción').notEmpty(),
+    check('description','La descripcion debe tener almenos 10 caracteres').isLength({min:10}),
     check('questions','No puedes enviar una encuesta sin preguntas.').notEmpty(),
     check('questions','Las preguntas enviadas deben estar como un arreglo de objetos siendo cada objeto una pregunta.').isArray().notEmpty(),
     //validar que 'questions' sea un schema de QuestionSchema (!!!!! Ir al trycatch del controlador donde se envian los datos a la DB)
     check('public','No has definido si la encuesta sera visible').notEmpty(),
-    check('anonymous','No has definido si la encuesta es anónima o no (true/false)').isBoolean(),
     validate
 ],postSurveys)
 
@@ -46,8 +47,11 @@ router.put('/:id',[
     check('category','La categoría no puede estar vacía').notEmpty(),
     check('category','La categoría debe ser enviada en mayúsculas').isUppercase(),
     check('category').custom(isValidCategory),
+    check('description','La encuesta debe tener una descripción').notEmpty(),
+    check('description','La descripcion debe tener almenos 10 caracteres').isLength({min:10}),
     check('questions','No puedes enviar una encuesta sin preguntas.').notEmpty(),
     check('questions','Las preguntas enviadas deben estar como un arreglo de objetos siendo cada objeto una pregunta.').isArray().notEmpty(),
+    check('public','No has definido si la encuesta sera visible').notEmpty(),
     validate
 ],putSurveys)
 
