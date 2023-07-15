@@ -3,8 +3,20 @@ const {Survey,Question,Answer}=require('../models/surveyModel')
 const Category=require('../models/categoryModel')
 
 const getSurveys=async(req=request,res=response)=>{
-    const {since=0,limit=5, userId}=req.query
+    const {since=0,limit=5,userId,public}=req.query
     const statusTrue={status:true}
+
+	if(public){
+	let [surveys,total]=await Promise.all([
+	Survey.find({status:true,public:true}).skip(since).limit(limit),
+	Survey.countDocuments({status:true,public:true})
+	])
+
+	return res.json({
+		surveys,
+		"total":total
+	})
+	}
 
     if (userId) {
         var [surveys,total]=await Promise.all([
