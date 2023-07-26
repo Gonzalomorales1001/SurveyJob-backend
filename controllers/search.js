@@ -15,9 +15,17 @@ const search = async ( req = request, res=response) => {
 
     switch (collection) {
         case 'surveys':
-            config = {
+            const { public } = req.query;
+            if (public) {
+                config = {
                 $or: [{title: regex}, {category: regex}],
-                $and: [{status: true}]
+                $and: [{status: true}, {public: true}]
+                }
+            } else {
+                config = {
+                    $or: [{title: regex}, {category: regex}],
+                    $and: [{status: true}]
+                }
             }
             results = await Survey.find(config).select('-answers -questions').populate('owner','username');
             total = await Survey.countDocuments(config);
