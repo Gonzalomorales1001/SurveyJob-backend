@@ -22,7 +22,7 @@ const search = async ( req = request, res=response) => {
             results = await Survey.find(config).select('-answers -questions').populate('owner','username');
             total = await Survey.countDocuments(config);
             break;
-        case 'category':
+        case 'categories':
             config = {
                 $or: [{category: regex}],
                 $and: [{status: true}]
