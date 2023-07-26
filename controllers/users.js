@@ -5,19 +5,17 @@ const {Survey}=require('../models/surveyModel')
 const bcrypt=require('bcryptjs')
 
 const getUsers=async(req=request,res=response)=>{
-    const {since=0,limit=10}=req.query
-
-    const statusTrue={status:true}
+    const {since=0,limit=10,all=false}=req.query
 
     const [Users,total]=await Promise.all([
-        User.find(statusTrue).skip(since).limit(limit) //.populate('user','name email'),
-        ,User.countDocuments(statusTrue)
+        User.find().skip(since).limit(limit),
+        User.countDocuments()
     ])
 
     res.json({
-        "msg":"get Users habilitado",
         Users,
-        "total":total
+        "total":total,
+        "showing":Users.length
     })
 }
 
