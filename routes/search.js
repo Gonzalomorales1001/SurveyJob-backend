@@ -6,10 +6,10 @@ const { isValidCollection } = require('../validations/customValidations');
 
 const router = Router();
 
-router.get('/:collection/:value',[
+router.get('/:collection/:term',[
     check('collection','Debes especificar la colección').notEmpty(),
     check('collection').custom(isValidCollection),
-    check('value','No has mandado el valor a buscar').notEmpty(),
+    check('term','No has mandado el valor a buscar').notEmpty(),
     validate
 ],search)
 
