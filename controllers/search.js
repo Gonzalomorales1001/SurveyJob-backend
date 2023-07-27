@@ -9,6 +9,8 @@ const search = async ( req = request, res=response) => {
     const collection = req.params.collection
     const regex = new RegExp(term,'i');
 
+    const { since = 0, limit = 0 } = req.query;
+
     let config;
     let results = [];
     let total = 0;
@@ -27,7 +29,7 @@ const search = async ( req = request, res=response) => {
                     $and: [{status: true}]
                 }
             }
-            results = await Survey.find(config).select('-answers -questions').populate('owner','username');
+            results = await Survey.find(config).skip(since).limit(limit).select('-answers -questions').populate('owner','username');
             total = await Survey.countDocuments(config);
             break;
         case 'categories':
@@ -43,7 +45,7 @@ const search = async ( req = request, res=response) => {
                 $or: [{username: regex}, {email: regex}],
                 $and: [{status: true}]
             }
-            results = await User.find(config);
+            results = await User.find(config).skip(since).limit(limit);
             total = await User.countDocuments(config);
             break;
         default:
