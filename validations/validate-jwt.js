@@ -22,7 +22,7 @@ const validateJWT=async (req=request,res=response,next)=>{
 
       //validar si existe usuario
       if (!user) {
-     res.status(401).json({
+        res.status(401).json({
         msg:"El usuario no existe"
      })   
 

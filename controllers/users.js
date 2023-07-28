@@ -8,8 +8,8 @@ const getUsers=async(req=request,res=response)=>{
     const {since=0,limit=10,all=false}=req.query
 
     const [Users,total]=await Promise.all([
-        User.find().skip(since).limit(limit),
-        User.countDocuments()
+        User.find({status:true}).skip(since).limit(limit),
+        User.countDocuments({status:true})
     ])
 
     res.json({
@@ -71,14 +71,9 @@ const putUsers=async(req=request,res=response)=>{
         })
     }
 
-    let {username,email,password,admin,img}=req.body
+    let {username,email,admin}=req.body
 
-    const salt=bcrypt.genSaltSync(10)
-    const hash=bcrypt.hashSync(password, salt)
-
-    password=hash
-
-    const data={username,email,password,admin,img}
+    const data={username,email,admin}
 
     const updatedUser= await User.findByIdAndUpdate(id,data,{new:true})
 
@@ -100,8 +95,15 @@ const deleteUsers=async(req=request,res=response)=>{
     }
 
     const userFoundByID=await User.findById(id)
+    const surveyJobID="64468dc0a3dbeb94c1620475"
 
-    if(!userFoundByID){
+    if(userFoundByID.userID==surveyJobID){
+        return res.status(403).json({
+            "msg":"El administrador SurveyJob no puede ser inactivado"
+        })
+    }
+
+    if(!userFoundByID||!userFoundByID.status){
         return res.status(404).json({
             "msg":"El usuario no ha sido encontrado o no se encuentra disponible"
         })

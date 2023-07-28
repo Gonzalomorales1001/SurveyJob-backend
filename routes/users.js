@@ -7,6 +7,7 @@ const { validateJWT } = require('../validations/validate-jwt')
 
 //database validations
 const {userEmailAlreadyInUse}=require('../helpers/DBvalidators')
+const { adminRole } = require('../validations/roles-validate')
 
 const router=Router()
 
@@ -36,6 +37,7 @@ router.put('/:id',[
 router.delete('/:id',[
     //verificar que este logeado
     validateJWT,
+    adminRole,
     check('id','No has enviado una ID válida').isMongoId(),
     validate
 ],deleteUsers)
