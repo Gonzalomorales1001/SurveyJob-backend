@@ -75,7 +75,7 @@ const deleteCategories=async(req=request,res=response)=>{
     if(!categoryFoundById||!categoryFoundById.status){
         return res.status(404).json({"msg":"La categoria no se encuentra"})}
 
-        const categoryDelete= await Category.findByIdAndDelete (id,{status:false},{new: true})
+        const categoryDelete= await Category.findByIdAndUpdate(id,{status:false},{new: true})
 
     res.json({
         "msg":"categoria eliminada", categoryDelete, CategoryAuten
