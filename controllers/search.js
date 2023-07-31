@@ -17,17 +17,16 @@ const search = async ( req = request, res=response) => {
 
     switch (collection) {
         case 'surveys':
-            const { public } = req.query;
-            if (public) {
-                config = {
+            const { public, SearchByCategory } = req.query;
+            config = {
                 $or: [{title: regex}, {category: regex}],
-                $and: [{status: true}, {public: true}]
-                }
-            } else {
-                config = {
-                    $or: [{title: regex}, {category: regex}],
-                    $and: [{status: true}]
-                }
+                $and: [{status: true}]
+            }
+            if (public) {
+                config.$and.push({public: true});
+            }
+            if (SearchByCategory) {
+                config.$or.shift();
             }
             results = await Survey.find(config).skip(since).limit(limit).select('-answers -questions').populate('owner','username');
             total = await Survey.countDocuments(config);
