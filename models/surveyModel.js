@@ -8,7 +8,7 @@ const QuestionSchema=Schema({
     questionType:{
         type:String,
         default: 'TEXT',
-        enum:['TEXT','SELECT','CHECKBOX'],
+        enum:['TEXT','RADIO','CHECKBOX'],
         required:[true,'Invalid type question']
     },
     options:{
@@ -38,6 +38,10 @@ const SurveySchema=Schema({
         required: [true, "Invalid Category"],
         default: 'OTROS'
     },
+    description:{
+        type: String,
+        required: [true, "Invalid Description"]
+    },
     status:{
         type: Boolean,
         default: true,
@@ -56,19 +60,10 @@ const SurveySchema=Schema({
         ref:'User',
         required:true
     },
-    anonymous:{
-        type: Boolean,
-        default: true,
-        required: true,
-    },
     public:{
         type:Boolean,
         default:true,
         required:true
-    },
-    color:{
-        type: String,
-        default: "cyan"
     },
 
 })

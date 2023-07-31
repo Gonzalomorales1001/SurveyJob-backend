@@ -5,14 +5,13 @@ const Category=require('../models/categoryModel')
 const getCategories=async(req=request,res=response)=>{
     const {since=0,limit=5}=req.query
 
-    const statusTrue={status:true}
-
-    const [Categories,total]=await Promise.all([Category.find(statusTrue).skip(since).limit(limit),Category.countDocuments(statusTrue)])
+    const [Categories,total]=await Promise.all([Category.find().skip(since).limit(limit).populate('user','username'),Category.countDocuments()])
     
     res.json({
-        "msg":"get categories habilitado",
+        "msg":"Categorías disponibles",
         Categories, 
-        total
+        total,
+        "showing": Categories.length
     })
 }
 
@@ -76,7 +75,7 @@ const deleteCategories=async(req=request,res=response)=>{
     if(!categoryFoundById||!categoryFoundById.status){
         return res.status(404).json({"msg":"La categoria no se encuentra"})}
 
-        const categoryDelete= await Category.findByIdAndDelete (id,{status:false},{new: true})
+        const categoryDelete= await Category.findByIdAndUpdate(id,{status:false},{new: true})
 
     res.json({
         "msg":"categoria eliminada", categoryDelete, CategoryAuten

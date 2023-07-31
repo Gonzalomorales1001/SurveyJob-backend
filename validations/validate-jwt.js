@@ -22,7 +22,7 @@ const validateJWT=async (req=request,res=response,next)=>{
 
       //validar si existe usuario
       if (!user) {
-     res.status(401).json({
+        res.status(401).json({
         msg:"El usuario no existe"
      })   
 
@@ -40,7 +40,7 @@ const validateJWT=async (req=request,res=response,next)=>{
         
     } catch (error) {
         res.status(401).json({
-            msg:"Invalid token"
+            msg:"La sesión ha expirado, inicia sesión nuevamente"
         })
     }
 }
