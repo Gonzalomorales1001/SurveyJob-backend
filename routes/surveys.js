@@ -25,7 +25,8 @@ router.get('/:id',[
 router.post('/',[
     validateJWT,
     check('title','Porfavor, envia el título de la encuesta.').notEmpty(),
-    check('title','El título de la encuesta debe tener almenos 5 carácteres').isLength({min:5}),
+    check('title','El título de la encuesta debe tener almenos 5 caracteres').isLength({min:5}),
+    check('title','El título de la encuesta no puede ser mayor a 50 caracteres').isLength({max:50}),
     check('category','La categoría no puede estar vacía').notEmpty(),
     check('category','La categoría debe ser enviada en mayúsculas').isUppercase(),
     check('category').custom(isValidCategory),
@@ -44,6 +45,7 @@ router.put('/:id',[
     check('id').custom(surveyFound),
     check('title','Porfavor, envia el título de la encuesta.').notEmpty(),
     check('title','El título de la encuesta debe tener almenos 5 carácteres').isLength({min:5}),
+    check('title','El título de la encuesta no puede ser mayor a 50 caracteres').isLength({max:50}),
     check('category','La categoría no puede estar vacía').notEmpty(),
     check('category','La categoría debe ser enviada en mayúsculas').isUppercase(),
     check('category').custom(isValidCategory),
