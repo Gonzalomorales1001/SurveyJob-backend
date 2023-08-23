@@ -5,7 +5,7 @@ const Category=require('../models/categoryModel')
 const getCategories=async(req=request,res=response)=>{
     const {since=0,limit=5}=req.query
 
-    const [Categories,total]=await Promise.all([Category.find().skip(since).limit(limit).populate('user','username'),Category.countDocuments()])
+    const [Categories,total]=await Promise.all([Category.find({status:true}).skip(since).limit(limit).populate('user','username'),Category.countDocuments()])
     
     res.json({
         "msg":"Categorías disponibles",
