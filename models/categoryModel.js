@@ -4,7 +4,6 @@ const CategorySchema=Schema({
     category:{
         type:String,
         required:[true,"Please, send a name for category"],
-        unique:true,
     },
     status:{
         type:Boolean,
